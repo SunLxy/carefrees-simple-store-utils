@@ -1,12 +1,12 @@
 
-import { PathTypes } from "../CSTU_interface"
+import { CSTU_PathTypes } from "../CSTU_interface"
 
 export * from "./CSTU_getValue"
 export * from "./CSTU_setValue"
 export * from "./CSTU_isEqual"
 
 /**格式化路径*/
-export const getFormatPath = (path: PathTypes) => {
+export const getFormatPath = (path: CSTU_PathTypes) => {
   if (Array.isArray(path)) {
     return path.join("_")
   }
@@ -14,7 +14,7 @@ export const getFormatPath = (path: PathTypes) => {
 }
 
 /**路径转换数组*/
-export const toArray = (path: PathTypes) => {
+export const toArray = (path: CSTU_PathTypes) => {
   if (Array.isArray(path)) {
     return path
   }

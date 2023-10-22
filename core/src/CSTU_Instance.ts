@@ -1,4 +1,4 @@
-import { PathTypes, CSTU_RegisterProps, CSTU_RegisterWatchProps, CSTU_SelectorListItemType } from "./CSTU_interface"
+import { CSTU_PathTypes, CSTU_RegisterProps, CSTU_RegisterWatchProps, CSTU_SelectorListItemType } from "./CSTU_interface"
 import { getFormatPath, toArray, CSTU_getValue, CSTU_setValue, splitPath, CSTU_merge } from "./utils"
 
 export class CSTU_Instance {
@@ -88,7 +88,7 @@ export class CSTU_Instance {
    * @param componentField 挂载组件存储 字段
    * @param path 更新组件路径
    * */
-  _create_CSTU_notice = (componentField: string, path: PathTypes,) => {
+  _create_CSTU_notice = (componentField: string, path: CSTU_PathTypes,) => {
     const newPath = getFormatPath(path)
     const componentList = this._get_CSTU_list<CSTU_RegisterProps>(componentField).filter((item) => getFormatPath(item.path) === newPath)
     componentList.forEach((com) => {
@@ -129,7 +129,7 @@ export class CSTU_Instance {
    * @param storeField  操作数据存储 字段
    * @param path 通知监听器的路径值更新
    * */
-  _create_CSTU_noticeWatch = (watchField: string, storeField: string, path: PathTypes,) => {
+  _create_CSTU_noticeWatch = (watchField: string, storeField: string, path: CSTU_PathTypes,) => {
     const watchPath = getFormatPath(path)
     const value = CSTU_getValue(this._get_CSTU_store(storeField), toArray(path))
     this._get_CSTU_list<CSTU_RegisterWatchProps>(watchField).forEach((item) => {
@@ -154,7 +154,7 @@ export class CSTU_Instance {
     componentField: string,
     storeField: string,
     watchField: string,
-    path: PathTypes,
+    path: CSTU_PathTypes,
     value: K,
     notice: boolean | string[] = true,
     prototype: boolean = false
@@ -210,7 +210,7 @@ export class CSTU_Instance {
    * @param storeField  操作数据存储 字段
    * @param path 获取数据的路径
    * */
-  _create_CSTU_getValue = (storeField: string, path?: PathTypes) => {
+  _create_CSTU_getValue = (storeField: string, path?: CSTU_PathTypes) => {
     if (path) {
       return CSTU_getValue(this._get_CSTU_store(storeField), toArray(path))
     }

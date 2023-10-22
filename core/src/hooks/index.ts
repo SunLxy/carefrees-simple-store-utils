@@ -3,7 +3,7 @@ import {
   CSTU_ClassInterface,
   CSTU_InstanceProviderProps,
   Use_CSTU_InstanceItemRegisterProps,
-  PathTypes
+  CSTU_PathTypes
 } from "../CSTU_interface"
 import { CSTU_Instance } from "../CSTU_Instance"
 import { CSTU_isEqual } from "./../utils"
@@ -205,7 +205,7 @@ export function create_CSTU_hooks_InstanceFieldWatch<T extends CSTU_Instance = C
   * use_CSTU_InstanceFieldWatch(initInstance, ["a", "b", "c],(value)=>console.log(value))
   * 
   */
-  return function use_CSTU_InstanceFieldWatch(instance: T, path: PathTypes, fun?: (value: any) => void) {
+  return function use_CSTU_InstanceFieldWatch(instance: T, path: CSTU_PathTypes, fun?: (value: any) => void) {
     const refValue = useRef<any>()
     const ref = useRef<(value: any) => void>(() => void 0)
 

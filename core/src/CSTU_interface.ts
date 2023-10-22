@@ -1,9 +1,9 @@
 
 import type { CSTU_Instance } from "./CSTU_Instance"
 
-export type IntType = string | number | boolean | symbol
+export type CSTU_IntType = string | number | boolean | symbol
 
-export type PathTypes = number | string | (number | string)[]
+export type CSTU_PathTypes = number | string | (number | string)[]
 
 
 /**实现构造器类型**/
@@ -19,18 +19,18 @@ export interface CSTU_InstanceProviderProps<K extends CSTU_Instance = CSTU_Insta
 }
 
 export interface Use_CSTU_InstanceItemRegisterProps {
-  path: PathTypes,
+  path: CSTU_PathTypes,
 }
 
 export interface CSTU_RegisterProps {
-  path: PathTypes,
+  path: CSTU_PathTypes,
   update: Function
   /**是否保存*/
   preserve?: boolean
 }
 
 export interface CSTU_RegisterWatchProps {
-  path: PathTypes,
+  path: CSTU_PathTypes,
   update: (value: any) => void
 }
 
