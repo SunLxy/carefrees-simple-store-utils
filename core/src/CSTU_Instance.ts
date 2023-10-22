@@ -222,10 +222,17 @@ export class CSTU_Instance {
    * @param storeField  操作数据存储 字段
    * @param initialField  操作数据存储 字段
    * @param initialValue 初始值存储 字段
+   * @param prototype 是否不改变原始数据存储地址方式存储 (默认false)
+   * 
   */
-  _create_CSTU_init = <T = any>(storeField: string, initialField: string, initialValue?: T) => {
-    this[initialField] = (initialValue || {}) as T
-    this[storeField] = CSTU_merge(this._get_CSTU_store(initialField), this._get_CSTU_store(storeField))
+  _create_CSTU_init = <T = any>(storeField: string, initialField: string, initialValue?: T, prototype: boolean = false) => {
+    if (prototype) {
+      this[storeField] = (initialValue || {}) as T
+      this[initialField] = CSTU_merge({}, this._get_CSTU_store(storeField))
+    } else {
+      this[initialField] = (initialValue || {}) as T
+      this[storeField] = CSTU_merge(this._get_CSTU_store(initialField), this._get_CSTU_store(storeField))
+    }
   }
 
   //-------------------------- Selector 选择器部分--------------------------------------
