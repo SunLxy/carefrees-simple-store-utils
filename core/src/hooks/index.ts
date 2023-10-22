@@ -1,8 +1,8 @@
-import { useRef, useMemo, createElement, createContext, useContext, useState, useEffect } from "react"
+import { useRef, createElement, createContext, useContext, useState, useEffect } from "react"
 import {
   CSTU_ClassInterface,
   CSTU_InstanceProviderProps,
-  UseSTU_ItemRegister,
+  Use_CSTU_InstanceItemRegisterProps,
   PathTypes
 } from "../CSTU_interface"
 import { CSTU_Instance } from "../CSTU_Instance"
@@ -14,10 +14,10 @@ import { CSTU_isEqual } from "./../utils"
  * 
  * @example
  * 
- * const context = createCSTU_Context(new CSTU_Instance())
+ * const context = create_CSTU_InstanceContext(new CSTU_Instance())
  * 
  * */
-export const createCSTU_Context = <T extends CSTU_Instance>(instance: T) => createContext(instance)
+export const create_CSTU_InstanceContext = <T extends CSTU_Instance>(instance: T) => createContext(instance)
 
 /**
  * 创建==== 初始实例化 hooks
@@ -25,10 +25,10 @@ export const createCSTU_Context = <T extends CSTU_Instance>(instance: T) => crea
  * 
  * @example 
  * 
- * const useInitInstance = createuseCSTU_Instance(CSTU_Instance)
+ * const useInitInstance = create_CSTU_Hooks_Instance(CSTU_Instance)
  * 
  */
-export function createuseCSTU_Instance<T extends CSTU_Instance = CSTU_Instance>(InstanceClas: CSTU_ClassInterface<T>) {
+export function create_CSTU_Hooks_Instance<T extends CSTU_Instance = CSTU_Instance>(InstanceClas: CSTU_ClassInterface<T>) {
 
   /**
   * @param instance 实例
@@ -36,14 +36,14 @@ export function createuseCSTU_Instance<T extends CSTU_Instance = CSTU_Instance>(
   * @example
   * 
   * 第一种
-  * const instance = useCSTU_Instance()
+  * const instance = use_CSTU_Instance()
   * 
   * 第二种
   * const initInstance = new CSTU_Instance()
-  * const instance = useCSTU_Instance(initInstance)
+  * const instance = use_CSTU_Instance(initInstance)
   * 
   * */
-  return function useCSTU_Instance(instance?: T) {
+  return function use_CSTU_Instance(instance?: T) {
     const instanceRef = useRef<T>(null)
     if (!instanceRef.current) {
       if (instance) {
@@ -58,23 +58,21 @@ export function createuseCSTU_Instance<T extends CSTU_Instance = CSTU_Instance>(
 
 /**
  * 创建====Provider 
- * @param useCSTU_Instance 获取实例
+ * @param use_CSTU_Instance 获取实例
  * @param Context 
- * @param initFunName 初始值方法名称
  * 
  * @example
  * 
- * const context = createCSTU_Context(new CSTU_Instance())
+ * const context = create_CSTU_InstanceContext(new CSTU_Instance())
  * 
- * const useInstance = createuseCSTU_Instance(CSTU_Instance)
+ * const use_CSTU_Instance = create_CSTU_Hooks_Instance(CSTU_Instance)
  * 
- * const Provider = createSTU_InstanceProvider(useInstance,context,"方法名")
+ * const Provider = create_CSTU_InstanceProvider(use_CSTU_Instance,context,"方法名")
  * 
 */
-export function createSTU_InstanceProvider<T extends CSTU_Instance = CSTU_Instance>(
-  useCSTU_Instance: (instance?: T) => T[],
+export function create_CSTU_InstanceProvider<T extends CSTU_Instance = CSTU_Instance>(
+  use_CSTU_Instance: (instance?: T) => T[],
   Context: React.Context<T>,
-  initFunName?: string
 ) {
 
   /**
@@ -98,7 +96,7 @@ export function createSTU_InstanceProvider<T extends CSTU_Instance = CSTU_Instan
   return function CSTU_InstanceProvider(props: CSTU_InstanceProviderProps<T>) {
 
     const { instance: parentInstance, children, } = props
-    const [instance] = useCSTU_Instance(parentInstance)
+    const [instance] = use_CSTU_Instance(parentInstance)
 
     return createElement(Context.Provider, {
       value: instance,
@@ -113,13 +111,13 @@ export function createSTU_InstanceProvider<T extends CSTU_Instance = CSTU_Instan
  * 
  * @example
  * 
- * const context = createCSTU_Context(new CSTU_Instance())
+ * const context = create_CSTU_InstanceContext(new CSTU_Instance())
  * 
- * const useContextInstance = createSTU_useContextInstance(context)
+ * const use_CSTU_InstanceContext = create_CSTU_hooks_InstanceContext(context)
  * 
  * */
-export function createSTU_useContextInstance<T extends CSTU_Instance = CSTU_Instance>(Context: React.Context<T>) {
-  return function useContextInstance() {
+export function create_CSTU_hooks_InstanceContext<T extends CSTU_Instance = CSTU_Instance>(Context: React.Context<T>) {
+  return function use_CSTU_InstanceContext() {
     return useContext<T>(Context)
   }
 }
@@ -131,13 +129,13 @@ export function createSTU_useContextInstance<T extends CSTU_Instance = CSTU_Inst
  * 
  * @example
  * 
- * const context = createCSTU_Context(new CSTU_Instance())
+ * const context = create_CSTU_InstanceContext(new CSTU_Instance())
  * 
- * const useItemRegister = createSTU_useInstanceItemRegister(context,"方法名称")
+ * const useItemRegister = create_CSTU_hooks_InstanceItemRegister(context,"方法名称")
  * 
  * 
 */
-export function createSTU_useInstanceItemRegister<T extends CSTU_Instance = CSTU_Instance>(
+export function create_CSTU_hooks_InstanceItemRegister<T extends CSTU_Instance = CSTU_Instance>(
   Context: React.Context<T>,
   registerFunName: string
 ) {
@@ -150,16 +148,16 @@ export function createSTU_useInstanceItemRegister<T extends CSTU_Instance = CSTU
   * 
   * 第一种
   * 
-  * const initInstance = useSTU_ItemRegister({ path:["a","b","c"] })
+  * const initInstance = use_CSTU_InstanceItemRegister({ path:["a","b","c"] })
   * 
   * 第二种
   * 
-  * const initInstance = useSTU_ItemRegister({ path:"a" })
+  * const initInstance = use_CSTU_InstanceItemRegister({ path:"a" })
   * 
   */
-  return function useSTU_ItemRegister(props: UseSTU_ItemRegister) {
+  return function use_CSTU_InstanceItemRegister(props: Use_CSTU_InstanceItemRegisterProps) {
     const { path } = props
-    const refUpdate = useSTU_Update()
+    const refUpdate = use_CSTU_Update()
     const instance = useContext<T>(Context)
     /**更新组件方法注册*/
     useEffect(() => {
@@ -182,10 +180,10 @@ export function createSTU_useInstanceItemRegister<T extends CSTU_Instance = CSTU
  * 
  * @example
  * 
- * const useFieldWatch = createSTU_useInstanceFieldWatch("方法名称")
+ * const use_CSTU_InstanceFieldWatch = create_CSTU_hooks_InstanceFieldWatch("方法名称")
  * 
 */
-export function createSTU_useInstanceFieldWatch<T extends CSTU_Instance = CSTU_Instance>(registerWatchFunName: string) {
+export function create_CSTU_hooks_InstanceFieldWatch<T extends CSTU_Instance = CSTU_Instance>(registerWatchFunName: string) {
 
   /**
   * 
@@ -198,20 +196,20 @@ export function createSTU_useInstanceFieldWatch<T extends CSTU_Instance = CSTU_I
   * 值格式
   * const initialValue = { a:{ b:{ c:1 } } }
   * 实例
-  * const instance = useCSTU_Instance()
+  * const instance = use_CSTU_Instance()
   * 
   * 第一种
-  * const value = useFieldWatch(initInstance,["a", "b", "c])
+  * const value = use_CSTU_InstanceFieldWatch(initInstance,["a", "b", "c])
   * 
   * 第二种
-  * useFieldWatch(initInstance, ["a", "b", "c],(value)=>console.log(value))
+  * use_CSTU_InstanceFieldWatch(initInstance, ["a", "b", "c],(value)=>console.log(value))
   * 
   */
-  return function useSTU_FieldWatch(instance: T, path: PathTypes, fun?: (value: any) => void) {
+  return function use_CSTU_InstanceFieldWatch(instance: T, path: PathTypes, fun?: (value: any) => void) {
     const refValue = useRef<any>()
     const ref = useRef<(value: any) => void>(() => void 0)
 
-    const refUpdate = useSTU_Update()
+    const refUpdate = use_CSTU_Update()
 
     ref.current = (value: any) => {
       refValue.current = value;
@@ -240,22 +238,22 @@ export function createSTU_useInstanceFieldWatch<T extends CSTU_Instance = CSTU_I
 
 /**
  * 创建====执行器
- * @param useCSTU_Instance 获取实例
+ * @param use_CSTU_Instance 获取实例
  * @param registerSelectorFunName 注册执行器的方法名称
  * @param getSelectorValueFunName 获取最新值的方法名称
  * 
  * @example
  * 
- * const context = createCSTU_Context(new CSTU_Instance())
+ * const context = create_CSTU_InstanceContext(new CSTU_Instance())
  * 
- * const useInstance = createuseCSTU_Instance(CSTU_Instance)
+ * const useInstance = create_CSTU_Hooks_Instance(CSTU_Instance)
  * 
- * const useSelector = createSTU_useSelector(useInstance,"注册执行器的方法名称","获取最新值的方法名称")
+ * const use_CSTU_Selector = create_CSTU_hooks_Selector(useInstance,"注册执行器的方法名称","获取最新值的方法名称")
  * 
  * 
 */
-export function createSTU_useSelector<K extends CSTU_Instance = CSTU_Instance>(
-  useCSTU_Instance: (instance?: K) => K[],
+export function create_CSTU_hooks_Selector<K extends CSTU_Instance = CSTU_Instance>(
+  use_CSTU_Instance: (instance?: K) => K[],
   registerSelectorFunName: string,
   getSelectorValueFunName: string
 ) {
@@ -266,17 +264,17 @@ export function createSTU_useSelector<K extends CSTU_Instance = CSTU_Instance>(
   * 
   * @example
   *
-  * const value = useSelector((instance) => ({ a:instance.formData, c:instance.formData })) 
+  * const value = use_CSTU_Selector((instance) => ({ a:instance.formData, c:instance.formData })) 
   * 
   * console.log(value)
   * 
   */
-  return function useSTU_Selector<Selected = any>(
+  return function use_CSTU_Selector<Selected = any>(
     selector: (state: K) => Selected,
     equalityFn: (a: any, b: any) => boolean = CSTU_isEqual
   ) {
-    const instance = useCSTU_Instance()
-    const refUpdate = useSTU_Update()
+    const instance = use_CSTU_Instance()
+    const refUpdate = use_CSTU_Update()
     /**为了解决闭包照成的值不是最新问题*/
     const refSelector = useRef(selector)
     refSelector.current = selector
@@ -297,7 +295,7 @@ export function createSTU_useSelector<K extends CSTU_Instance = CSTU_Instance>(
 /**
  * 更新页面状态
  * */
-export const useSTU_Update = () => {
+export const use_CSTU_Update = () => {
   const [, _update] = useState({})
   /**为了防止 hooks 闭包问题*/
   const refUpdate = useRef<Function>()

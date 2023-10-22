@@ -18,7 +18,7 @@ export interface CSTU_InstanceProviderProps<K extends CSTU_Instance = CSTU_Insta
   children?: React.ReactNode
 }
 
-export interface UseSTU_ItemRegister {
+export interface Use_CSTU_InstanceItemRegisterProps {
   path: PathTypes,
 }
 

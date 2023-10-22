@@ -5,6 +5,7 @@ const internalSet = <Entity = any, Output = Entity, Value = any>(
   input: Entity,
   paths: Path,
   value: Value,
+  prototype: boolean = false,
   removeUndefined: boolean,
 ): Output => {
   if (!paths.length) {
@@ -22,10 +23,10 @@ const internalSet = <Entity = any, Output = Entity, Value = any>(
     clone = {} as unknown as Output;
   } else if (Array.isArray(input)) {
     // 判断 input 是否是数组
-    clone = [...input] as unknown as Output;
+    clone = (prototype ? input : [...input]) as unknown as Output;
   } else {
     // 其他就是 对象
-    clone = { ...input } as unknown as Output;
+    clone = (prototype ? input : { ...input }) as unknown as Output;
   }
 
   // 当是否移除undefined===true 时并且 value===undefined 时移除最后一项
@@ -33,7 +34,7 @@ const internalSet = <Entity = any, Output = Entity, Value = any>(
     delete clone[path][restPath[0]];
   } else {
     // 递归赋值
-    clone[path] = internalSet(clone[path], restPath, value, removeUndefined);
+    clone[path] = internalSet(clone[path], restPath, value, prototype, removeUndefined);
   }
 
   return clone;
@@ -44,6 +45,7 @@ export const CSTU_setValue = <Entity = any, Output = Entity, Value = any>(
   input: Entity,
   paths: Path,
   value: Value,
+  prototype: boolean = false,
   removeUndefined: boolean = false,
 ): Output => {
   if (!Array.isArray(paths)) {
@@ -61,7 +63,7 @@ export const CSTU_setValue = <Entity = any, Output = Entity, Value = any>(
     return input as unknown as Output;
   }
 
-  return internalSet(input, paths, value, removeUndefined);
+  return internalSet(input, paths, value, prototype, removeUndefined);
 };
 
 function isObject(obj: any) {
