@@ -248,11 +248,11 @@ export function create_CSTU_hooks_InstanceFieldWatch<T extends CSTU_Instance = C
  * 
  * const useInstance = create_CSTU_Hooks_Instance(CSTU_Instance)
  * 
- * const use_CSTU_Selector = create_CSTU_hooks_Selector(useInstance,"注册执行器的方法名称","获取最新值的方法名称")
+ * const use_CSTU_InstanceSelector = create_CSTU_hooks_InstanceSelector(useInstance,"注册执行器的方法名称","获取最新值的方法名称")
  * 
  * 
 */
-export function create_CSTU_hooks_Selector<K extends CSTU_Instance = CSTU_Instance>(
+export function create_CSTU_hooks_InstanceSelector<K extends CSTU_Instance = CSTU_Instance>(
   use_CSTU_Instance: (instance?: K) => K[],
   registerSelectorFunName: string,
   getSelectorValueFunName: string
@@ -264,12 +264,12 @@ export function create_CSTU_hooks_Selector<K extends CSTU_Instance = CSTU_Instan
   * 
   * @example
   *
-  * const value = use_CSTU_Selector((instance) => ({ a:instance.formData, c:instance.formData })) 
+  * const value = use_CSTU_InstanceSelector((instance) => ({ a:instance.formData, c:instance.formData })) 
   * 
   * console.log(value)
   * 
   */
-  return function use_CSTU_Selector<Selected = any>(
+  return function use_CSTU_InstanceSelector<Selected = any>(
     selector: (state: K) => Selected,
     equalityFn: (a: any, b: any) => boolean = CSTU_isEqual
   ) {
