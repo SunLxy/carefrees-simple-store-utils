@@ -280,7 +280,7 @@ export function create_CSTU_hooks_InstanceSelector<K extends CSTU_Instance = CST
     refSelector.current = selector
 
     /**key值*/
-    const refKey = useRef(Symbol("STU_useSelector"))
+    const refKey = useRef(Symbol("use_CSTU_InstanceSelector"))
 
     const storeRef = useRef(instance?.[registerSelectorFunName]?.(refKey.current, refSelector.current, refUpdate.current, equalityFn))
 
