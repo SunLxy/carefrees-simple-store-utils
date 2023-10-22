@@ -1,5 +1,5 @@
 import { CSTU_PathTypes, CSTU_RegisterProps, CSTU_RegisterWatchProps, CSTU_SelectorListItemType } from "./CSTU_interface"
-import { getFormatPath, toArray, CSTU_getValue, CSTU_setValue, splitPath, CSTU_merge } from "./utils"
+import { CSTU_getFormatPath, CSTU_toArray, CSTU_getValue, CSTU_setValue, CSTU_splitPath, CSTU_merge } from "./utils"
 
 export class CSTU_Instance {
 
@@ -50,9 +50,9 @@ export class CSTU_Instance {
     return () => {
       this[componentField] = this._get_CSTU_list<CSTU_RegisterProps>(componentField).filter((ite) => ite !== props)
       const { preserve = true } = props
-      const currentPath = getFormatPath(props.path)
+      const currentPath = CSTU_getFormatPath(props.path)
       /**查询是否存在相同字段的组件*/
-      const finx = this._get_CSTU_list<CSTU_RegisterProps>(componentField).find((item) => getFormatPath(item.path) === currentPath)
+      const finx = this._get_CSTU_list<CSTU_RegisterProps>(componentField).find((item) => CSTU_getFormatPath(item.path) === currentPath)
       /**当不存储 并且 没有相同字段组件的时候*/
       if (!preserve && !finx) {
         /**
@@ -60,7 +60,7 @@ export class CSTU_Instance {
         * 2. 判断当前组件是否已经不存在，不存在则进行初始化
         * 3. 当前值和默认值相等的时候
         * */
-        const pathArr = toArray(props.path)
+        const pathArr = CSTU_toArray(props.path)
         const defaultValue = CSTU_getValue(this._get_CSTU_store<R>(initialField), pathArr)
         const value = CSTU_getValue(this._get_CSTU_store<R>(storeField), pathArr)
         if (defaultValue !== value) {
@@ -89,8 +89,8 @@ export class CSTU_Instance {
    * @param path 更新组件路径
    * */
   _create_CSTU_notice = (componentField: string, path: CSTU_PathTypes,) => {
-    const newPath = getFormatPath(path)
-    const componentList = this._get_CSTU_list<CSTU_RegisterProps>(componentField).filter((item) => getFormatPath(item.path) === newPath)
+    const newPath = CSTU_getFormatPath(path)
+    const componentList = this._get_CSTU_list<CSTU_RegisterProps>(componentField).filter((item) => CSTU_getFormatPath(item.path) === newPath)
     componentList.forEach((com) => {
       /**通知更新组件*/
       if (com && typeof com.update === "function") {
@@ -109,7 +109,7 @@ export class CSTU_Instance {
     if (Array.isArray(paths)) {
       paths.forEach((path) => {
         if (path) {
-          this._create_CSTU_notice(componentField, splitPath(path))
+          this._create_CSTU_notice(componentField, CSTU_splitPath(path))
         }
       })
     } else if (typeof paths === "boolean" && paths) {
@@ -130,10 +130,10 @@ export class CSTU_Instance {
    * @param path 通知监听器的路径值更新
    * */
   _create_CSTU_noticeWatch = (watchField: string, storeField: string, path: CSTU_PathTypes,) => {
-    const watchPath = getFormatPath(path)
-    const value = CSTU_getValue(this._get_CSTU_store(storeField), toArray(path))
+    const watchPath = CSTU_getFormatPath(path)
+    const value = CSTU_getValue(this._get_CSTU_store(storeField), CSTU_toArray(path))
     this._get_CSTU_list<CSTU_RegisterWatchProps>(watchField).forEach((item) => {
-      if (getFormatPath(item.path) === watchPath) {
+      if (CSTU_getFormatPath(item.path) === watchPath) {
         item.update(value)
       }
     })
@@ -159,8 +159,8 @@ export class CSTU_Instance {
     notice: boolean | string[] = true,
     prototype: boolean = false
   ) => {
-    const preVaue = CSTU_getValue(this._get_CSTU_store(storeField), toArray(path));
-    this[storeField] = CSTU_setValue(this._get_CSTU_store(storeField), toArray(path), value, prototype);
+    const preVaue = CSTU_getValue(this._get_CSTU_store(storeField), CSTU_toArray(path));
+    this[storeField] = CSTU_setValue(this._get_CSTU_store(storeField), CSTU_toArray(path), value, prototype);
     /**判断值相等 , 当相等的时候才进行更新监听的值*/
     if (preVaue !== value)
       this._create_CSTU_noticeWatch(watchField, storeField, path);
@@ -191,8 +191,8 @@ export class CSTU_Instance {
   ) => {
     if (values) {
       Object.entries(values).forEach(([path, value]) => {
-        const preVaue = CSTU_getValue(this._get_CSTU_store(storeField), toArray(path));
-        this[storeField] = CSTU_setValue(this._get_CSTU_store(storeField), splitPath(path), value, prototype)
+        const preVaue = CSTU_getValue(this._get_CSTU_store(storeField), CSTU_toArray(path));
+        this[storeField] = CSTU_setValue(this._get_CSTU_store(storeField), CSTU_splitPath(path), value, prototype)
         /**判断值相等 , 当相等的时候才进行更新监听的值*/
         if (preVaue !== value)
           this._create_CSTU_noticeWatch(path, watchField, storeField);
@@ -212,7 +212,7 @@ export class CSTU_Instance {
    * */
   _create_CSTU_getValue = (storeField: string, path?: CSTU_PathTypes) => {
     if (path) {
-      return CSTU_getValue(this._get_CSTU_store(storeField), toArray(path))
+      return CSTU_getValue(this._get_CSTU_store(storeField), CSTU_toArray(path))
     }
     return this._get_CSTU_store(storeField)
   }

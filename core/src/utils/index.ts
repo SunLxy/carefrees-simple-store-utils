@@ -6,7 +6,7 @@ export * from "./CSTU_setValue"
 export * from "./CSTU_isEqual"
 
 /**格式化路径*/
-export const getFormatPath = (path: CSTU_PathTypes) => {
+export const CSTU_getFormatPath = (path: CSTU_PathTypes) => {
   if (Array.isArray(path)) {
     return path.join("_")
   }
@@ -14,7 +14,7 @@ export const getFormatPath = (path: CSTU_PathTypes) => {
 }
 
 /**路径转换数组*/
-export const toArray = (path: CSTU_PathTypes) => {
+export const CSTU_toArray = (path: CSTU_PathTypes) => {
   if (Array.isArray(path)) {
     return path
   }
@@ -22,6 +22,6 @@ export const toArray = (path: CSTU_PathTypes) => {
 }
 
 /**路径字符串转换成数组*/
-export const splitPath = (path: string) => {
+export const CSTU_splitPath = (path: string) => {
   return path.split("_").filter(Boolean)
 }
