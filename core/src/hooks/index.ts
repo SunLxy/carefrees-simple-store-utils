@@ -298,7 +298,7 @@ export function create_CSTU_hooks_InstanceSelector<K extends CSTU_Instance = CST
 export const use_CSTU_Update = () => {
   const [, _update] = useState({})
   /**为了防止 hooks 闭包问题*/
-  const refUpdate = useRef<Function>()
+  const refUpdate = useRef<Function>(() => void 0)
   refUpdate.current = () => {
     _update({})
   }
