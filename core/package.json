@@ -1,8 +1,8 @@
 {
   "name": "@carefrees/simple-store-utils",
-  "version": "0.0.7",
+  "version": "0.0.0",
   "description": "",
-  "homepage": "https://sunlxy.github.io/carefrees-simple-store",
+  "homepage": "https://sunlxy.github.io/carefrees-simple-store-utils",
   "author": "SunLxy <1011771396@qq.com>",
   "license": "ISC",
   "main": "lib/index.js",
