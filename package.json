@@ -1,0 +1,19 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "core",
+    "examples"
+  ],
+  "scripts": {
+    "build": "npm run-script build --workspace @carefrees/simple-store-utils",
+    "watch": "npm run-script watch --workspace @carefrees/simple-store-utils",
+    "website": "npm run-script build --workspace examples",
+    "start": "npm run-script start --workspace examples",
+    "version": "lerna version --exact --force-publish --no-push --no-git-tag-version"
+  },
+  "devDependencies": {
+    "lerna": "^7.0.1",
+    "tsbb": "~4.1.14"
+  }
+}
