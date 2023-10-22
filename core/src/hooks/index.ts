@@ -17,7 +17,7 @@ import { CSTU_isEqual } from "./../utils"
  * const context = create_CSTU_InstanceContext(new CSTU_Instance())
  * 
  * */
-export const create_CSTU_InstanceContext = <T extends CSTU_Instance>(instance: T) => createContext(instance)
+export const create_CSTU_InstanceContext = <T extends CSTU_Instance = CSTU_Instance>(instance: T) => createContext(instance)
 
 /**
  * 创建==== 初始实例化 hooks
