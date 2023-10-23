@@ -45,7 +45,13 @@ export class CSTU_Instance {
    * @param prototype 是否在不改变原始数据存储地址方式直接更新值 (默认false)
    * 
    * */
-  _create_CSTU_register = <R = any>(componentField: string, storeField: string, initialField: string, props: CSTU_RegisterProps, prototype: boolean = false) => {
+  _create_CSTU_register = <R = any>(
+    componentField: string,
+    storeField: string,
+    initialField: string,
+    props: CSTU_RegisterProps,
+    prototype: boolean = false
+  ) => {
     this._get_CSTU_list<CSTU_RegisterProps>(componentField).push(props)
     return () => {
       this[componentField] = this._get_CSTU_list<CSTU_RegisterProps>(componentField).filter((ite) => ite !== props)
@@ -68,7 +74,6 @@ export class CSTU_Instance {
         }
       }
     }
-
   }
 
   /**
@@ -76,7 +81,10 @@ export class CSTU_Instance {
    * @param watchField  挂载监听组件存储 字段
    * @param props 内部操作参数
    * */
-  _create_CSTU_registerWatch = (watchField: string, props: CSTU_RegisterWatchProps) => {
+  _create_CSTU_registerWatch = (
+    watchField: string,
+    props: CSTU_RegisterWatchProps
+  ) => {
     this._get_CSTU_list<CSTU_RegisterWatchProps>(watchField).push(props)
     return () => {
       this[watchField] = this._get_CSTU_list<CSTU_RegisterWatchProps>(watchField).filter((ite) => ite !== props)
@@ -88,7 +96,10 @@ export class CSTU_Instance {
    * @param componentField 挂载组件存储 字段
    * @param path 更新组件路径
    * */
-  _create_CSTU_notice = (componentField: string, path: CSTU_PathTypes,) => {
+  _create_CSTU_notice = (
+    componentField: string,
+    path: CSTU_PathTypes
+  ) => {
     const newPath = CSTU_getFormatPath(path)
     const componentList = this._get_CSTU_list<CSTU_RegisterProps>(componentField).filter((item) => CSTU_getFormatPath(item.path) === newPath)
     componentList.forEach((com) => {
@@ -105,7 +116,10 @@ export class CSTU_Instance {
    * @param paths 更新组件路径集合
    * 
   */
-  _create_CSTU_bathNotice = (componentField: string, paths: string[] | boolean = true) => {
+  _create_CSTU_bathNotice = (
+    componentField: string,
+    paths: string[] | boolean = true
+  ) => {
     if (Array.isArray(paths)) {
       paths.forEach((path) => {
         if (path) {
@@ -129,7 +143,11 @@ export class CSTU_Instance {
    * @param storeField  操作数据存储 字段
    * @param path 通知监听器的路径值更新
    * */
-  _create_CSTU_noticeWatch = (watchField: string, storeField: string, path: CSTU_PathTypes,) => {
+  _create_CSTU_noticeWatch = (
+    watchField: string,
+    storeField: string,
+    path: CSTU_PathTypes
+  ) => {
     const watchPath = CSTU_getFormatPath(path)
     const value = CSTU_getValue(this._get_CSTU_store(storeField), CSTU_toArray(path))
     this._get_CSTU_list<CSTU_RegisterWatchProps>(watchField).forEach((item) => {
@@ -210,7 +228,10 @@ export class CSTU_Instance {
    * @param storeField  操作数据存储 字段
    * @param path 获取数据的路径
    * */
-  _create_CSTU_getValue = (storeField: string, path?: CSTU_PathTypes) => {
+  _create_CSTU_getValue = (
+    storeField: string,
+    path?: CSTU_PathTypes
+  ) => {
     if (path) {
       return CSTU_getValue(this._get_CSTU_store(storeField), CSTU_toArray(path))
     }
@@ -225,7 +246,12 @@ export class CSTU_Instance {
    * @param prototype 是否不改变原始数据存储地址方式存储 (默认false)
    * 
   */
-  _create_CSTU_init = <T = any>(storeField: string, initialField: string, initialValue?: T, prototype: boolean = false) => {
+  _create_CSTU_init = <T = any>(
+    storeField: string,
+    initialField: string,
+    initialValue?: T,
+    prototype: boolean = false
+  ) => {
     if (prototype) {
       this[storeField] = (initialValue || {}) as T
       this[initialField] = CSTU_merge({}, this._get_CSTU_store(storeField))
@@ -242,7 +268,7 @@ export class CSTU_Instance {
    * @param storeField  操作数据存储 字段
    * 
   */
-  _create_CSTU_bathRunSelector = (selectorMapField: string, storeField: string) => {
+  _create_CSTU_bathRunSelector = (selectorMapField: string) => {
     this._get_CSTU_map(selectorMapField).forEach((item) => {
       const newValue = item.selector(this)
       let isNoUpdate = false

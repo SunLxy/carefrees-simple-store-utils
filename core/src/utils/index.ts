@@ -18,7 +18,7 @@ export const CSTU_toArray = (path: CSTU_PathTypes) => {
   if (Array.isArray(path)) {
     return path
   }
-  return [path]
+  return CSTU_splitPath(`${path}`)
 }
 
 /**路径字符串转换成数组*/
