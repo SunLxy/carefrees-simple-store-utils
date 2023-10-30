@@ -10,7 +10,7 @@ export interface CSTU_ClassInterface<T> {
   new(): T
 }
 
-export interface CSTU_InstanceProviderProps<K extends CSTU_Instance = CSTU_Instance, T = any> {
+export interface CSTU_InstanceProviderProps<K = CSTU_Instance, T = any> {
   /**实例*/
   instance?: K
   /**内容*/

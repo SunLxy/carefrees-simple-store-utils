@@ -17,7 +17,7 @@ import { CSTU_isEqual } from "./../utils"
  * const context = create_CSTU_InstanceContext(new CSTU_Instance())
  * 
  * */
-export const create_CSTU_InstanceContext = <T extends CSTU_Instance = CSTU_Instance>(instance: T) => createContext(instance)
+export const create_CSTU_InstanceContext = <T = CSTU_Instance>(instance: T) => createContext(instance)
 
 /**
  * 创建==== 初始实例化 hooks
@@ -28,7 +28,7 @@ export const create_CSTU_InstanceContext = <T extends CSTU_Instance = CSTU_Insta
  * const useInitInstance = create_CSTU_Hooks_Instance(CSTU_Instance)
  * 
  */
-export function create_CSTU_Hooks_Instance<T extends CSTU_Instance = CSTU_Instance>(InstanceClas: CSTU_ClassInterface<T>) {
+export function create_CSTU_Hooks_Instance<T = CSTU_Instance>(InstanceClas: CSTU_ClassInterface<T>) {
 
   /**
   * @param instance 实例
@@ -70,7 +70,7 @@ export function create_CSTU_Hooks_Instance<T extends CSTU_Instance = CSTU_Instan
  * const Provider = create_CSTU_InstanceProvider(use_CSTU_Instance,context,"方法名")
  * 
 */
-export function create_CSTU_InstanceProvider<T extends CSTU_Instance = CSTU_Instance>(
+export function create_CSTU_InstanceProvider<T = CSTU_Instance>(
   use_CSTU_Instance: (instance?: T) => T[],
   Context: React.Context<T>,
 ) {
@@ -116,7 +116,7 @@ export function create_CSTU_InstanceProvider<T extends CSTU_Instance = CSTU_Inst
  * const use_CSTU_InstanceContext = create_CSTU_hooks_InstanceContext(context)
  * 
  * */
-export function create_CSTU_hooks_InstanceContext<T extends CSTU_Instance = CSTU_Instance>(Context: React.Context<T>) {
+export function create_CSTU_hooks_InstanceContext<T = CSTU_Instance>(Context: React.Context<T>) {
   return function use_CSTU_InstanceContext() {
     return useContext<T>(Context)
   }
@@ -135,7 +135,7 @@ export function create_CSTU_hooks_InstanceContext<T extends CSTU_Instance = CSTU
  * 
  * 
 */
-export function create_CSTU_hooks_InstanceItemRegister<T extends CSTU_Instance = CSTU_Instance>(
+export function create_CSTU_hooks_InstanceItemRegister<T = CSTU_Instance>(
   Context: React.Context<T>,
   registerFunName: string
 ) {
@@ -183,7 +183,7 @@ export function create_CSTU_hooks_InstanceItemRegister<T extends CSTU_Instance =
  * const use_CSTU_InstanceFieldWatch = create_CSTU_hooks_InstanceFieldWatch("方法名称")
  * 
 */
-export function create_CSTU_hooks_InstanceFieldWatch<T extends CSTU_Instance = CSTU_Instance>(registerWatchFunName: string) {
+export function create_CSTU_hooks_InstanceFieldWatch<T = CSTU_Instance>(registerWatchFunName: string) {
 
   /**
   * 
@@ -252,7 +252,7 @@ export function create_CSTU_hooks_InstanceFieldWatch<T extends CSTU_Instance = C
  * 
  * 
 */
-export function create_CSTU_hooks_InstanceSelector<K extends CSTU_Instance = CSTU_Instance>(
+export function create_CSTU_hooks_InstanceSelector<K = CSTU_Instance>(
   use_CSTU_Instance: (instance?: K) => K[],
   registerSelectorFunName: string,
   getSelectorValueFunName: string
