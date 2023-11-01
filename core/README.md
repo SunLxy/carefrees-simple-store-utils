@@ -6,7 +6,6 @@
 // CSTU_Instance.ts 
 
 import { CSTU_PathTypes, CSTU_RegisterProps, CSTU_RegisterWatchProps, CSTU_SelectorListItemType } from "./CSTU_interface";
-
 export declare class CSTU_Instance {
     /**
      * 基础创建方法=====>获取数组数据
@@ -70,7 +69,7 @@ export declare class CSTU_Instance {
      * @param prototype 是否不改变原始数据存储地址方式直接更新值 (默认false)
      *
      * */
-    _create_CSTU_updateValue: <K = any>(componentField: string, storeField: string, watchField: string, path: CSTU_PathTypes, value: K, notice?: boolean | string[], prototype?: boolean) => void;
+    _create_CSTU_updateValue: <K = any>(componentField: string, storeField: string, watchField: string | undefined | null, path: CSTU_PathTypes, value: K, notice?: boolean | string[], prototype?: boolean) => void;
     /**
      * 基础创建方法=====>批量数据更新
      * @param componentField 挂载组件存储 字段
@@ -80,7 +79,7 @@ export declare class CSTU_Instance {
      * @param notice 通知更新
      * @param prototype 是否不改变原始数据存储地址方式直接更新值 (默认false)
      * */
-    _create_CSTU_bathUpdateValue: (componentField: string, storeField: string, watchField: string, values: Record<string, any>, notice?: boolean | string[], prototype?: boolean) => void;
+    _create_CSTU_bathUpdateValue: (componentField: string, storeField: string, watchField: string | undefined | null, values: Record<string, any>, notice?: boolean | string[], prototype?: boolean) => void;
     /**
      * 基础创建方法=====>获取值
      * @param storeField  操作数据存储 字段
@@ -92,15 +91,17 @@ export declare class CSTU_Instance {
      * @param storeField  操作数据存储 字段
      * @param initialField  操作数据存储 字段
      * @param initialValue 初始值存储 字段
+     * @param prototype 是否不改变原始数据存储地址方式存储 (默认false)
+     *
     */
-    _create_CSTU_init: <T = any>(storeField: string, initialField: string, initialValue?: T) => void;
+    _create_CSTU_init: <T = any>(storeField: string, initialField: string, initialValue?: T, prototype?: boolean) => void;
     /**
      * 基础创建方法=====> 数据更新,执行选择器(暂时 直接手动调用)
      * @param selectorMapField  执行器方法集合存储 字段
      * @param storeField  操作数据存储 字段
      *
     */
-    _create_CSTU_bathRunSelector: (selectorMapField: string, storeField: string) => void;
+    _create_CSTU_bathRunSelector: (selectorMapField: string) => void;
     /**
      * 基础创建方法=====>注册 选择器函数，存储状态中提取数据以供此组件
      * @param selectorMapField  执行器方法集合存储 字段
@@ -122,6 +123,7 @@ export declare class CSTU_Instance {
     _create_CSTU_getSelectorValue: (selectorMapField: string, key: Object | Symbol) => unknown;
 }
 
+
 ```
 
 ## 创建`react`使用相关`hooks`方法
@@ -130,9 +132,7 @@ export declare class CSTU_Instance {
 // hooks/index.ts 
 
 import { CSTU_ClassInterface, CSTU_InstanceProviderProps, Use_CSTU_InstanceItemRegisterProps, CSTU_PathTypes } from "../CSTU_interface";
-
 import { CSTU_Instance } from "../CSTU_Instance";
-
 /**
  * 创建====Context
  * @param instance 默认初始实例
@@ -142,7 +142,7 @@ import { CSTU_Instance } from "../CSTU_Instance";
  * const context = create_CSTU_InstanceContext(new CSTU_Instance())
  *
  * */
-export declare const create_CSTU_InstanceContext: <T extends CSTU_Instance>(instance: T) => import("react").Context<T>;
+export declare const create_CSTU_InstanceContext: <T = CSTU_Instance>(instance: T) => import("react").Context<T>;
 /**
  * 创建==== 初始实例化 hooks
  * @param Instance class实例
@@ -152,7 +152,7 @@ export declare const create_CSTU_InstanceContext: <T extends CSTU_Instance>(inst
  * const useInitInstance = create_CSTU_Hooks_Instance(CSTU_Instance)
  *
  */
-export declare function create_CSTU_Hooks_Instance<T extends CSTU_Instance = CSTU_Instance>(InstanceClas: CSTU_ClassInterface<T>): (instance?: T) => T[];
+export declare function create_CSTU_Hooks_Instance<T = CSTU_Instance>(InstanceClas: CSTU_ClassInterface<T>): (instance?: T) => T[];
 /**
  * 创建====Provider
  * @param use_CSTU_Instance 获取实例
@@ -167,7 +167,7 @@ export declare function create_CSTU_Hooks_Instance<T extends CSTU_Instance = CST
  * const Provider = create_CSTU_InstanceProvider(use_CSTU_Instance,context,"方法名")
  *
 */
-export declare function create_CSTU_InstanceProvider<T extends CSTU_Instance = CSTU_Instance>(use_CSTU_Instance: (instance?: T) => T[], Context: React.Context<T>): (props: CSTU_InstanceProviderProps<T>) => import("react").FunctionComponentElement<import("react").ProviderProps<T>>;
+export declare function create_CSTU_InstanceProvider<T = CSTU_Instance>(use_CSTU_Instance: (instance?: T) => T[], Context: React.Context<T>): (props: CSTU_InstanceProviderProps<T>) => import("react").FunctionComponentElement<import("react").ProviderProps<T>>;
 /**
  * 创建====获取当前的状态管理实例
  * @param Context
@@ -179,7 +179,7 @@ export declare function create_CSTU_InstanceProvider<T extends CSTU_Instance = C
  * const use_CSTU_InstanceContext = create_CSTU_hooks_InstanceContext(context)
  *
  * */
-export declare function create_CSTU_hooks_InstanceContext<T extends CSTU_Instance = CSTU_Instance>(Context: React.Context<T>): () => T;
+export declare function create_CSTU_hooks_InstanceContext<T = CSTU_Instance>(Context: React.Context<T>): () => T;
 /**
  * 创建====子组件注册更新
  * @param Context
@@ -193,7 +193,7 @@ export declare function create_CSTU_hooks_InstanceContext<T extends CSTU_Instanc
  *
  *
 */
-export declare function create_CSTU_hooks_InstanceItemRegister<T extends CSTU_Instance = CSTU_Instance>(Context: React.Context<T>, registerFunName: string): (props: Use_CSTU_InstanceItemRegisterProps) => T;
+export declare function create_CSTU_hooks_InstanceItemRegister<T = CSTU_Instance>(Context: React.Context<T>, registerFunName: string): (props: Use_CSTU_InstanceItemRegisterProps) => T;
 /**
  * 创建====注册监听字段更新
  * @param registerWatchFunName 注册监听器的方法名称
@@ -203,7 +203,7 @@ export declare function create_CSTU_hooks_InstanceItemRegister<T extends CSTU_In
  * const use_CSTU_InstanceFieldWatch = create_CSTU_hooks_InstanceFieldWatch("方法名称")
  *
 */
-export declare function create_CSTU_hooks_InstanceFieldWatch<T extends CSTU_Instance = CSTU_Instance>(registerWatchFunName: string): (instance: T, path: CSTU_PathTypes, fun?: (value: any) => void) => any;
+export declare function create_CSTU_hooks_InstanceFieldWatch<T = CSTU_Instance>(registerWatchFunName: string): (instance: T, path: CSTU_PathTypes, fun?: (value: any) => void) => any;
 /**
  * 创建====执行器
  * @param use_CSTU_Instance 获取实例
@@ -216,11 +216,11 @@ export declare function create_CSTU_hooks_InstanceFieldWatch<T extends CSTU_Inst
  *
  * const useInstance = create_CSTU_Hooks_Instance(CSTU_Instance)
  *
- * const use_CSTU_Selector = create_CSTU_hooks_Selector(useInstance,"注册执行器的方法名称","获取最新值的方法名称")
+ * const use_CSTU_InstanceSelector = create_CSTU_hooks_InstanceSelector(useInstance,"注册执行器的方法名称","获取最新值的方法名称")
  *
  *
 */
-export declare function create_CSTU_hooks_Selector<K extends CSTU_Instance = CSTU_Instance>(use_CSTU_Instance: (instance?: K) => K[], registerSelectorFunName: string, getSelectorValueFunName: string): <Selected = any>(selector: (state: K) => Selected, equalityFn?: (a: any, b: any) => boolean) => Selected;
+export declare function create_CSTU_hooks_InstanceSelector<K = CSTU_Instance>(use_CSTU_Instance: (instance?: K) => K[], registerSelectorFunName: string, getSelectorValueFunName: string): <Selected = any>(selector: (state: K) => Selected, equalityFn?: (a: any, b: any) => boolean) => Selected;
 /**
  * 更新页面状态
  * */
@@ -242,7 +242,7 @@ export type CSTU_PathTypes = number | string | (number | string)[];
 export interface CSTU_ClassInterface<T> {
     new (): T;
 }
-export interface CSTU_InstanceProviderProps<K extends CSTU_Instance = CSTU_Instance, T = any> {
+export interface CSTU_InstanceProviderProps<K = CSTU_Instance, T = any> {
     /**实例*/
     instance?: K;
     /**内容*/
@@ -276,6 +276,7 @@ export interface CSTU_SelectorListItemType<T extends CSTU_Instance = CSTU_Instan
     /**新老数据对比方法*/
     equalityFn?: (a: TState, b: TState) => boolean;
 }
+
 
 
 ```
