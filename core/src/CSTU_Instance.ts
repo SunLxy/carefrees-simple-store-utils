@@ -171,7 +171,7 @@ export class CSTU_Instance {
   _create_CSTU_updateValue = <K = any>(
     componentField: string,
     storeField: string,
-    watchField: string,
+    watchField: string | undefined | null,
     path: CSTU_PathTypes,
     value: K,
     notice: boolean | string[] = true,
@@ -180,7 +180,7 @@ export class CSTU_Instance {
     const preVaue = CSTU_getValue(this._get_CSTU_store(storeField), CSTU_toArray(path));
     this[storeField] = CSTU_setValue(this._get_CSTU_store(storeField), CSTU_toArray(path), value, prototype);
     /**判断值相等 , 当相等的时候才进行更新监听的值*/
-    if (preVaue !== value)
+    if (preVaue !== value && watchField)
       this._create_CSTU_noticeWatch(watchField, storeField, path);
 
     if (typeof notice === "boolean" && notice) {
@@ -202,7 +202,7 @@ export class CSTU_Instance {
   _create_CSTU_bathUpdateValue = (
     componentField: string,
     storeField: string,
-    watchField: string,
+    watchField: string | undefined | null,
     values: Record<string, any>,
     notice: boolean | string[] = true,
     prototype: boolean = false
@@ -212,7 +212,7 @@ export class CSTU_Instance {
         const preVaue = CSTU_getValue(this._get_CSTU_store(storeField), CSTU_toArray(path));
         this[storeField] = CSTU_setValue(this._get_CSTU_store(storeField), CSTU_splitPath(path), value, prototype)
         /**判断值相等 , 当相等的时候才进行更新监听的值*/
-        if (preVaue !== value)
+        if (preVaue !== value && watchField)
           this._create_CSTU_noticeWatch(path, watchField, storeField);
       })
       if (typeof notice === "boolean" && notice) {
