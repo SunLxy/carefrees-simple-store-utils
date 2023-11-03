@@ -47,8 +47,8 @@ export class CSTU_Instance {
    * */
   _create_CSTU_register = <R = any>(
     componentField: string,
-    storeField: string,
-    initialField: string,
+    storeField: string | undefined | null,
+    initialField: string | undefined | null,
     props: CSTU_RegisterProps,
     prototype: boolean = false
   ) => {
@@ -60,7 +60,7 @@ export class CSTU_Instance {
       /**查询是否存在相同字段的组件*/
       const finx = this._get_CSTU_list<CSTU_RegisterProps>(componentField).find((item) => CSTU_getFormatPath(item.path) === currentPath)
       /**当不存储 并且 没有相同字段组件的时候*/
-      if (!preserve && !finx) {
+      if (!preserve && !finx && storeField && initialField) {
         /**
         * 1. 通过参数控制卸载组件是否进行初始化参数
         * 2. 判断当前组件是否已经不存在，不存在则进行初始化
@@ -248,16 +248,20 @@ export class CSTU_Instance {
   */
   _create_CSTU_init = <T = any>(
     storeField: string,
-    initialField: string,
+    initialField: string | undefined | null,
     initialValue?: T,
     prototype: boolean = false
   ) => {
     if (prototype) {
       this[storeField] = (initialValue || {}) as T
-      this[initialField] = CSTU_merge({}, this._get_CSTU_store(storeField))
+      if (initialField) {
+        this[initialField] = CSTU_merge({}, this._get_CSTU_store(storeField))
+      }
     } else {
-      this[initialField] = (initialValue || {}) as T
-      this[storeField] = CSTU_merge(this._get_CSTU_store(initialField), this._get_CSTU_store(storeField))
+      if (initialField) {
+        this[initialField] = (initialValue || {}) as T
+      }
+      this[storeField] = CSTU_merge(initialField ? this._get_CSTU_store(initialField) : initialValue, this._get_CSTU_store(storeField))
     }
   }
 
