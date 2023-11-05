@@ -10,7 +10,7 @@ export const CSTU_getFormatPath = (path: CSTU_PathTypes) => {
   if (Array.isArray(path)) {
     return path.join("_")
   } else if (["number", "boolean"].includes(typeof path)) {
-    return path
+    return `${path}`
   } else if (!path) {
     return ''
   }
