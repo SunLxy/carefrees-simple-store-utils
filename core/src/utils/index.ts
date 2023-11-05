@@ -9,6 +9,10 @@ export * from "./CSTU_isEqual"
 export const CSTU_getFormatPath = (path: CSTU_PathTypes) => {
   if (Array.isArray(path)) {
     return path.join("_")
+  } else if (["number", "boolean"].includes(typeof path)) {
+    return path
+  } else if (!path) {
+    return ''
   }
   return `${path}`
 }
@@ -17,11 +21,20 @@ export const CSTU_getFormatPath = (path: CSTU_PathTypes) => {
 export const CSTU_toArray = (path: CSTU_PathTypes) => {
   if (Array.isArray(path)) {
     return path
+  } else if (["number", "boolean"].includes(typeof path)) {
+    return [path]
+  } else if (typeof path === "string") {
+    return CSTU_splitPath(`${path}`)
   }
-  return CSTU_splitPath(`${path}`)
+  return []
 }
 
 /**路径字符串转换成数组*/
 export const CSTU_splitPath = (path: string) => {
-  return path.split("_").filter(Boolean)
+  if (typeof path === "string") {
+    return path.split("_").filter(Boolean)
+  } else if (["number", "boolean"].includes(typeof path)) {
+    return [path]
+  }
+  return []
 }
