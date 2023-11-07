@@ -156,16 +156,18 @@ export function create_CSTU_hooks_InstanceItemRegister<T = CSTU_Instance>(
   * 
   */
   return function use_CSTU_InstanceItemRegister(props: Use_CSTU_InstanceItemRegisterProps) {
-    const { path } = props
+    const { path, uid } = props
     const refUpdate = use_CSTU_Update()
     const instance = useContext<T>(Context)
+    const current_uid = useRef(uid || Symbol("instance_item_register"))
     /**更新组件方法注册*/
     useEffect(() => {
       let unRegister: Function;
       if (registerFunName) {
         unRegister = instance[registerFunName]({
           path,
-          update: refUpdate.current
+          update: refUpdate.current,
+          uid: current_uid.current
         })
       }
       return () => unRegister?.()
@@ -208,7 +210,7 @@ export function create_CSTU_hooks_InstanceFieldWatch<T = CSTU_Instance>(register
   return function use_CSTU_InstanceFieldWatch(instance: T, path: CSTU_PathTypes, fun?: (value: any) => void) {
     const refValue = useRef<any>()
     const ref = useRef<(value: any) => void>(() => void 0)
-
+    const current_uid = useRef(Symbol("instance_field_watch_register"))
     const refUpdate = use_CSTU_Update()
 
     ref.current = (value: any) => {
@@ -226,7 +228,8 @@ export function create_CSTU_hooks_InstanceFieldWatch<T = CSTU_Instance>(register
       if (registerWatchFunName) {
         unRegister = instance[registerWatchFunName]({
           path,
-          update: ref.current
+          update: ref.current,
+          uid: current_uid.current
         })
       }
       return () => unRegister?.()
@@ -280,7 +283,7 @@ export function create_CSTU_hooks_InstanceSelector<K = CSTU_Instance>(
     refSelector.current = selector
 
     /**key值*/
-    const refKey = useRef(Symbol("use_CSTU_InstanceSelector"))
+    const refKey = useRef(Symbol("instance_selector"))
 
     const storeRef = useRef(instance?.[registerSelectorFunName]?.(refKey.current, refSelector.current, refUpdate.current, equalityFn))
 

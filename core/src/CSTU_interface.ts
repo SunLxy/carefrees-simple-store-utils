@@ -20,6 +20,8 @@ export interface CSTU_InstanceProviderProps<K = CSTU_Instance, T = any> {
 export interface Use_CSTU_InstanceItemRegisterProps {
   /**注册地址*/
   path: CSTU_PathTypes,
+  /**唯一值*/
+  uid?: Symbol
 }
 
 export interface CSTU_RegisterProps {
@@ -29,6 +31,8 @@ export interface CSTU_RegisterProps {
   update: Function
   /**是否保存*/
   preserve?: boolean
+  /**唯一值*/
+  uid?: Symbol
 }
 
 export interface CSTU_RegisterWatchProps {
@@ -36,6 +40,8 @@ export interface CSTU_RegisterWatchProps {
   path: CSTU_PathTypes,
   /**更新当前组件方法*/
   update: (value: any) => void
+  /**唯一值*/
+  uid?: Symbol
 }
 
 export interface CSTU_SelectorListItemType<T extends CSTU_Instance = CSTU_Instance, TState = unknown, Selected = unknown,> {
