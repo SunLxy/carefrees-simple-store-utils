@@ -67,7 +67,7 @@ export function create_CSTU_Hooks_Instance<T = CSTU_Instance>(InstanceClas: CSTU
  * 
  * const use_CSTU_Instance = create_CSTU_Hooks_Instance(CSTU_Instance)
  * 
- * const Provider = create_CSTU_InstanceProvider(use_CSTU_Instance,context,"方法名")
+ * const Provider = create_CSTU_InstanceProvider(use_CSTU_Instance,context)
  * 
 */
 export function create_CSTU_InstanceProvider<T = CSTU_Instance>(
@@ -306,4 +306,39 @@ export const use_CSTU_Update = () => {
     _update({})
   }
   return refUpdate
+}
+
+/**
+ * 创建一套状态管理
+ * @param instance 实例
+ * @param registerFunName 注册方法名称
+ * @param registerWatchFunName 注册监听器的方法名称
+ * @param registerSelectorFunName 注册执行器的方法名称
+ * @param getSelectorValueFunName 获取最新值的方法名称
+*/
+export const create_CSTU_Hooks = <T = CSTU_Instance>(instance: CSTU_ClassInterface<T>, registerFunName: string, registerWatchFunName?: string, registerSelectorFunName?: string, getSelectorValueFunName?: string) => {
+  /**创建hooks*/
+  /**创建实例状态上下文*/
+  const instanceContext = create_CSTU_InstanceContext<T>(new instance())
+  /**获取或者声明实例*/
+  const useInstance = create_CSTU_Hooks_Instance(instance)
+  /** Provider  */
+  const InstanceProvider = create_CSTU_InstanceProvider(useInstance, instanceContext)
+  /**获取上下文实例*/
+  const useInstanceContext = create_CSTU_hooks_InstanceContext(instanceContext)
+  /**注册当前组件*/
+  const useInstanceItemRegister = create_CSTU_hooks_InstanceItemRegister(instanceContext, registerFunName)
+  /**监听字段值变化*/
+  const useInstanceFieldWatch = create_CSTU_hooks_InstanceFieldWatch(registerWatchFunName)
+  /**Selector 执行器 ,允许您使用选择器函数从存储状态中提取数据以供此组件使用。*/
+  const useInstanceSelector = create_CSTU_hooks_InstanceSelector(useInstance, registerSelectorFunName, getSelectorValueFunName)
+  return {
+    instanceContext,
+    useInstance,
+    useInstanceContext,
+    InstanceProvider,
+    useInstanceItemRegister,
+    useInstanceFieldWatch,
+    useInstanceSelector,
+  }
 }
