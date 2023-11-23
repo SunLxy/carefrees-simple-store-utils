@@ -18,6 +18,9 @@
     "build": "tsbb build",
     "watch": "tsbb watch"
   },
+  "dependencies": {
+    "fast-deep-equal": "^3.1.3"
+  },
   "devDependencies": {
     "@types/react": "~18.2.15",
     "react": "~18.2.0"
