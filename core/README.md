@@ -164,7 +164,7 @@ export declare function create_CSTU_Hooks_Instance<T = CSTU_Instance>(InstanceCl
  *
  * const use_CSTU_Instance = create_CSTU_Hooks_Instance(CSTU_Instance)
  *
- * const Provider = create_CSTU_InstanceProvider(use_CSTU_Instance,context,"方法名")
+ * const Provider = create_CSTU_InstanceProvider(use_CSTU_Instance,context)
  *
 */
 export declare function create_CSTU_InstanceProvider<T = CSTU_Instance>(use_CSTU_Instance: (instance?: T) => T[], Context: React.Context<T>): (props: CSTU_InstanceProviderProps<T>) => import("react").FunctionComponentElement<import("react").ProviderProps<T>>;
@@ -226,6 +226,23 @@ export declare function create_CSTU_hooks_InstanceSelector<K = CSTU_Instance>(us
  * */
 export declare const use_CSTU_Update: () => import("react").MutableRefObject<Function>;
 
+/**
+ * 创建一套状态管理
+ * @param instance 实例
+ * @param registerFunName 注册方法名称
+ * @param registerWatchFunName 注册监听器的方法名称
+ * @param registerSelectorFunName 注册执行器的方法名称
+ * @param getSelectorValueFunName 获取最新值的方法名称
+*/
+export declare const create_CSTU_Hooks: <T = CSTU_Instance>(instance: CSTU_ClassInterface<T>, registerFunName: string, registerWatchFunName?: string, registerSelectorFunName?: string, getSelectorValueFunName?: string) => {
+    instanceContext: import("react").Context<T>;
+    useInstance: (instance?: T) => T[];
+    useInstanceContext: () => T;
+    InstanceProvider: (props: CSTU_InstanceProviderProps<T, any>) => import("react").FunctionComponentElement<import("react").ProviderProps<T>>;
+    useInstanceItemRegister: (props: Use_CSTU_InstanceItemRegisterProps) => T;
+    useInstanceFieldWatch: (instance: CSTU_Instance, path: CSTU_PathTypes, fun?: (value: any) => void) => any;
+    useInstanceSelector: <Selected = any>(selector: (state: T) => Selected, equalityFn?: (a: any, b: any) => boolean) => Selected;
+};
 ```
 
 ## 类型

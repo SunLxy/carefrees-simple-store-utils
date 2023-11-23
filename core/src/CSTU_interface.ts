@@ -5,7 +5,7 @@ export type CSTU_IntType = string | number | boolean | symbol
 
 export type CSTU_PathTypes = number | string | (number | string)[]
 
-/**实现构造器类型**/
+/**实现构造器类型*/
 export interface CSTU_ClassInterface<T> {
   new(): T
 }
