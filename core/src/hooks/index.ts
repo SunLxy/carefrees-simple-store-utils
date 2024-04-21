@@ -273,7 +273,7 @@ export function create_CSTU_hooks_InstanceSelector<K extends CSTU_Instance = CST
   * 
   */
   return function use_CSTU_InstanceSelector<Selected = any>(
-    selector: (state: K) => Selected,
+    selector: (state: { instance: K }) => Selected,
     equalityFn: (a: any, b: any) => boolean = CSTU_isEqual
   ) {
     const instance = useInstanceContext()

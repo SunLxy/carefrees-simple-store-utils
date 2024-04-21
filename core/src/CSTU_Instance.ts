@@ -268,10 +268,9 @@ export class CSTU_Instance {
 
   //-------------------------- Selector 选择器部分--------------------------------------
   /**获取状态*/
-  _create_CSTU_getState = <T extends CSTU_Instance = CSTU_Instance>(): T => this as unknown as T;
+  _create_CSTU_getState = <T extends CSTU_Instance = CSTU_Instance>(): { instance: T } => ({ instance: this }) as unknown as { instance: T };
   /**获取初始值*/
-  _create_CSTU_getInitialState = <T extends CSTU_Instance = CSTU_Instance>(): T => this as unknown as T;
-
+  _create_CSTU_getInitialState = <T extends CSTU_Instance = CSTU_Instance>(): { instance: T } => ({ instance: this }) as unknown as { instance: T };
   /**
    * 监听注册监听方法
    * @param setField 方法集合存储 字段
@@ -292,5 +291,15 @@ export class CSTU_Instance {
   */
   _crate_CSTU_destroySubscribe = (setField: string) => {
     return () => this._get_CSTU_set(setField).clear()
+  }
+
+  /**
+   * 销毁注册监听方法数据
+   * @param setField 方法集合存储 字段
+   * @param listener 注册执行方法
+   * 
+  */
+  _crate_CSTU_RunSubscribe = (setField: string) => {
+    // this._get_CSTU_set(setField).forEach((listener) => listener(this))
   }
 }
