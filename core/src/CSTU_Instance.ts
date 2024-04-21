@@ -294,12 +294,11 @@ export class CSTU_Instance {
   }
 
   /**
-   * 销毁注册监听方法数据
+   * 执行
    * @param setField 方法集合存储 字段
-   * @param listener 注册执行方法
    * 
   */
-  _crate_CSTU_RunSubscribe = (setField: string) => {
-    // this._get_CSTU_set(setField).forEach((listener) => listener(this))
+  _crate_CSTU_RunSubscribe = <T extends CSTU_Instance = CSTU_Instance>(setField: string) => {
+    this._get_CSTU_set<ListenerType<T>>(setField).forEach((listener) => typeof listener === "function" && listener({ instance: this } as unknown as { instance: T }))
   }
 }

@@ -44,4 +44,4 @@ export interface CSTU_RegisterWatchProps {
   uid?: Symbol
 }
 
-export type ListenerType<T extends CSTU_Instance = CSTU_Instance> = (instance: T) => void
+export type ListenerType<T extends CSTU_Instance = CSTU_Instance> = (store: { instance: T }) => void
