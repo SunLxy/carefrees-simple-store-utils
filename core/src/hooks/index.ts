@@ -251,13 +251,13 @@ export function create_CSTU_hooks_InstanceFieldWatch<T = CSTU_Instance>(register
  * 
  * const context = create_CSTU_InstanceContext(new CSTU_Instance())
  * 
- * const useInstance = create_CSTU_Hooks_Instance(CSTU_Instance)
+ * const useInstanceContext = create_CSTU_hooks_InstanceContext(instanceContext)
  * 
  * const use_CSTU_InstanceSelector = create_CSTU_hooks_InstanceSelector(useInstance,"监听方法存储数据字段")
  * 
 */
 export function create_CSTU_hooks_InstanceSelector<K extends CSTU_Instance = CSTU_Instance>(
-  use_CSTU_Instance: (instance?: K) => K[],
+  useInstanceContext: (instance?: K) => K,
   listenerField: string,
 ) {
   /**
@@ -276,7 +276,7 @@ export function create_CSTU_hooks_InstanceSelector<K extends CSTU_Instance = CST
     selector: (state: K) => Selected,
     equalityFn: (a: any, b: any) => boolean = CSTU_isEqual
   ) {
-    const [instance] = use_CSTU_Instance()
+    const instance = useInstanceContext()
     const slice = useSyncExternalStoreWithSelector(
       instance._crate_CSTU_registerSubscribe(listenerField),
       instance._create_CSTU_getState,
@@ -324,7 +324,7 @@ export const create_CSTU_Hooks = <T extends CSTU_Instance = CSTU_Instance>(insta
   /**监听字段值变化*/
   const useInstanceFieldWatch = create_CSTU_hooks_InstanceFieldWatch(registerWatchFunName)
   /**Selector 执行器 ,允许您使用选择器函数从存储状态中提取数据以供此组件使用。*/
-  const useInstanceSelector = create_CSTU_hooks_InstanceSelector(useInstance, listenerField)
+  const useInstanceSelector = create_CSTU_hooks_InstanceSelector(useInstanceContext, listenerField)
   return {
     instanceContext,
     useInstance,

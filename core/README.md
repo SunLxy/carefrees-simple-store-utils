@@ -199,18 +199,16 @@ export declare function create_CSTU_hooks_InstanceFieldWatch<T = CSTU_Instance>(
 /**
  * 创建====执行器
  * @param use_CSTU_Instance 获取实例
- * @param registerSelectorFunName 注册执行器的方法名称
- * @param getSelectorValueFunName 获取最新值的方法名称
- *
+ * @param listenerField 监听方法存储数据字段
+ * 
  * @example
- *
+ * 
  * const context = create_CSTU_InstanceContext(new CSTU_Instance())
- *
- * const useInstance = create_CSTU_Hooks_Instance(CSTU_Instance)
- *
- * const use_CSTU_InstanceSelector = create_CSTU_hooks_InstanceSelector(useInstance,"注册执行器的方法名称","获取最新值的方法名称")
- *
- *
+ * 
+ * const useInstanceContext = create_CSTU_hooks_InstanceContext(instanceContext)
+ * 
+ * const use_CSTU_InstanceSelector = create_CSTU_hooks_InstanceSelector(useInstance,"监听方法存储数据字段")
+ * 
 */
 export declare function create_CSTU_hooks_InstanceSelector<K = CSTU_Instance>(use_CSTU_Instance: (instance?: K) => K[], registerSelectorFunName: string, getSelectorValueFunName: string): <Selected = any>(selector: (state: K) => Selected, equalityFn?: (a: any, b: any) => boolean) => Selected;
 /**
