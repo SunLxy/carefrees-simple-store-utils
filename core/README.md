@@ -95,32 +95,24 @@ export declare class CSTU_Instance {
      *
     */
     _create_CSTU_init: <T = any>(storeField: string, initialField: string, initialValue?: T, prototype?: boolean) => void;
+    /**获取状态*/
+    _create_CSTU_getState: <T extends CSTU_Instance = CSTU_Instance>() => T;
+    /**获取初始值*/
+    _create_CSTU_getInitialState: <T extends CSTU_Instance = CSTU_Instance>() => T;
     /**
-     * 基础创建方法=====> 数据更新,执行选择器(暂时 直接手动调用)
-     * @param selectorMapField  执行器方法集合存储 字段
-     * @param storeField  操作数据存储 字段
+     * 监听注册监听方法
+     * @param setField 方法集合存储 字段
+     * @param listener 注册执行方法
      *
     */
-    _create_CSTU_bathRunSelector: (selectorMapField: string) => void;
+    _crate_CSTU_registerSubscribe: <T extends CSTU_Instance = CSTU_Instance>(setField: string) => (listener: ListenerType<T>) => () => boolean;
     /**
-     * 基础创建方法=====>注册 选择器函数，存储状态中提取数据以供此组件
-     * @param selectorMapField  执行器方法集合存储 字段
-     * @param key  map集合 设置值的唯一key值
-     * @param selectorFn  获取最新数据的 执行方法
-     * @param updateData  组件更新方法
-     * @param equalityFn  新老数据对比方法
+     * 销毁注册监听方法数据
+     * @param setField 方法集合存储 字段
+     * @param listener 注册执行方法
+     *
     */
-    _create_CSTU_registerSelector: <Selected = unknown, T extends CSTU_Instance = CSTU_Instance>(selectorMapField: string, key: Object | Symbol, selectorFn: (instance: T) => Selected, updateData: (value: Selected) => void, equalityFn?: (a: any, b: any) => boolean) => {
-        data: Selected;
-        unMount: () => void;
-    };
-    /**
-     * 基础创建方法=====>选择器 获取值
-     * @param selectorMapField  执行器方法集合存储 字段
-     * @param storeField  操作数据存储 字段
-     * @param key   从 map集合 取值唯一key值
-     * */
-    _create_CSTU_getSelectorValue: (selectorMapField: string, key: Object | Symbol) => unknown;
+    _crate_CSTU_destroySubscribe: (setField: string) => () => void;
 }
 
 
@@ -293,7 +285,5 @@ export interface CSTU_SelectorListItemType<T extends CSTU_Instance = CSTU_Instan
     /**新老数据对比方法*/
     equalityFn?: (a: TState, b: TState) => boolean;
 }
-
-
 
 ```

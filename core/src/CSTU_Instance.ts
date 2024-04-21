@@ -1,4 +1,4 @@
-import { CSTU_PathTypes, CSTU_RegisterProps, CSTU_RegisterWatchProps, CSTU_SelectorListItemType } from "./CSTU_interface"
+import { CSTU_PathTypes, CSTU_RegisterProps, CSTU_RegisterWatchProps, ListenerType } from "./CSTU_interface"
 import { CSTU_getFormatPath, CSTU_toArray, CSTU_getValue, CSTU_setValue, CSTU_splitPath, CSTU_merge } from "./utils"
 
 export class CSTU_Instance {
@@ -28,13 +28,14 @@ export class CSTU_Instance {
   }
 
   /**
-   * 基础创建方法=====>获取 Map 对象数据
-   * @param field 字段
-   * */
-  _get_CSTU_map = (field: string): Map<Symbol | Object, CSTU_SelectorListItemType> => {
-    this[field] = this[field] || new Map([])
+ * 基础创建方法=====>获取 Set 对象数据
+ * @param field 字段
+ * */
+  _get_CSTU_set = <T>(field: string): Set<T> => {
+    this[field] = this[field] || new Set([])
     return this[field]
   }
+
 
   /**
    * 基础创建方法=====>注册组件
@@ -266,68 +267,30 @@ export class CSTU_Instance {
   }
 
   //-------------------------- Selector 选择器部分--------------------------------------
+  /**获取状态*/
+  _create_CSTU_getState = <T extends CSTU_Instance = CSTU_Instance>(): T => this as unknown as T;
+  /**获取初始值*/
+  _create_CSTU_getInitialState = <T extends CSTU_Instance = CSTU_Instance>(): T => this as unknown as T;
+
   /**
-   * 基础创建方法=====> 数据更新,执行选择器(暂时 直接手动调用)
-   * @param selectorMapField  执行器方法集合存储 字段
-   * @param storeField  操作数据存储 字段
+   * 监听注册监听方法
+   * @param setField 方法集合存储 字段
+   * @param listener 注册执行方法
    * 
   */
-  _create_CSTU_bathRunSelector = (selectorMapField: string) => {
-    this._get_CSTU_map(selectorMapField).forEach((item) => {
-      const newValue = item.selector(this)
-      let isNoUpdate = false
-      if (typeof item.equalityFn === "function") {
-        isNoUpdate = item.equalityFn?.(item.preValue, newValue)
-      }
-      item.preValue = newValue;
-      if (!isNoUpdate) {
-        item.updateData(newValue)
-      }
-    })
+  _crate_CSTU_registerSubscribe = <T extends CSTU_Instance = CSTU_Instance>(setField: string,) => {
+    return (listener: ListenerType<T>) => {
+      this._get_CSTU_set(setField).add(listener)
+      return () => this._get_CSTU_set(setField).delete(listener);
+    }
   }
-
   /**
-   * 基础创建方法=====>注册 选择器函数，存储状态中提取数据以供此组件
-   * @param selectorMapField  执行器方法集合存储 字段
-   * @param key  map集合 设置值的唯一key值
-   * @param selectorFn  获取最新数据的 执行方法
-   * @param updateData  组件更新方法
-   * @param equalityFn  新老数据对比方法
+   * 销毁注册监听方法数据
+   * @param setField 方法集合存储 字段
+   * @param listener 注册执行方法
+   * 
   */
-  _create_CSTU_registerSelector = <Selected = unknown, T extends CSTU_Instance = CSTU_Instance>(
-    selectorMapField: string,
-    key: Object | Symbol,
-    selectorFn: (instance: T) => Selected,
-    updateData: (value: Selected) => void,
-    equalityFn?: (a: any, b: any) => boolean,
-  ) => {
-    const preValue = selectorFn(this as unknown as T);
-    this._get_CSTU_map(selectorMapField).set(key, { preValue, selector: selectorFn, updateData, equalityFn })
-    return {
-      data: preValue,
-      unMount: () => {
-        this._get_CSTU_map(selectorMapField).delete(key)
-      }
-    }
+  _crate_CSTU_destroySubscribe = (setField: string) => {
+    return () => this._get_CSTU_set(setField).clear()
   }
-
-  /**
-   * 基础创建方法=====>选择器 获取值
-   * @param selectorMapField  执行器方法集合存储 字段
-   * @param storeField  操作数据存储 字段
-   * @param key   从 map集合 取值唯一key值
-   * */
-  _create_CSTU_getSelectorValue = (
-    selectorMapField: string,
-    key: Object | Symbol
-  ) => {
-    const selectorData = this._get_CSTU_map(selectorMapField).get(key)
-    if (selectorData) {
-      const preValue = selectorData?.selector(this)
-      selectorData.preValue = preValue;
-      this._get_CSTU_map(selectorMapField).set(key, selectorData);
-    }
-    return this._get_CSTU_map(selectorMapField).get(key)?.preValue
-  }
-
 }

@@ -44,13 +44,4 @@ export interface CSTU_RegisterWatchProps {
   uid?: Symbol
 }
 
-export interface CSTU_SelectorListItemType<T extends CSTU_Instance = CSTU_Instance, TState = unknown, Selected = unknown,> {
-  /**上一次值*/
-  preValue: TState
-  /**更新组件方法*/
-  updateData: (value: Selected) => void
-  /**获取最新数据的 执行方法*/
-  selector: (instance: T) => Selected,
-  /**新老数据对比方法*/
-  equalityFn?: (a: TState, b: TState) => boolean
-}
+export type ListenerType<T extends CSTU_Instance = CSTU_Instance> = (instance: T) => void

@@ -19,9 +19,11 @@
     "watch": "tsbb watch"
   },
   "dependencies": {
+    "use-sync-external-store": "1.2.0",
     "fast-deep-equal": "^3.1.3"
   },
   "devDependencies": {
+    "@types/use-sync-external-store": "0.0.6",
     "@types/react": "~18.2.15",
     "react": "~18.2.0"
   }

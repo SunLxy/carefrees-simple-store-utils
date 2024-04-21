@@ -1,4 +1,6 @@
 import { useRef, createElement, createContext, useContext, useState, useEffect } from "react"
+import useSyncExternalStoreExports from 'use-sync-external-store/shim/with-selector'
+
 import {
   CSTU_ClassInterface,
   CSTU_InstanceProviderProps,
@@ -7,6 +9,7 @@ import {
 } from "../CSTU_interface"
 import { CSTU_Instance } from "../CSTU_Instance"
 import { CSTU_isEqual } from "./../utils"
+const { useSyncExternalStoreWithSelector } = useSyncExternalStoreExports
 
 /**
  * 创建====Context 
@@ -242,8 +245,7 @@ export function create_CSTU_hooks_InstanceFieldWatch<T = CSTU_Instance>(register
 /**
  * 创建====执行器
  * @param use_CSTU_Instance 获取实例
- * @param registerSelectorFunName 注册执行器的方法名称
- * @param getSelectorValueFunName 获取最新值的方法名称
+ * @param listenerField 监听方法存储数据字段
  * 
  * @example
  * 
@@ -251,14 +253,12 @@ export function create_CSTU_hooks_InstanceFieldWatch<T = CSTU_Instance>(register
  * 
  * const useInstance = create_CSTU_Hooks_Instance(CSTU_Instance)
  * 
- * const use_CSTU_InstanceSelector = create_CSTU_hooks_InstanceSelector(useInstance,"注册执行器的方法名称","获取最新值的方法名称")
- * 
+ * const use_CSTU_InstanceSelector = create_CSTU_hooks_InstanceSelector(useInstance,"监听方法存储数据字段")
  * 
 */
-export function create_CSTU_hooks_InstanceSelector<K = CSTU_Instance>(
+export function create_CSTU_hooks_InstanceSelector<K extends CSTU_Instance = CSTU_Instance>(
   use_CSTU_Instance: (instance?: K) => K[],
-  registerSelectorFunName: string,
-  getSelectorValueFunName: string
+  listenerField: string,
 ) {
   /**
   * 
@@ -276,22 +276,15 @@ export function create_CSTU_hooks_InstanceSelector<K = CSTU_Instance>(
     selector: (state: K) => Selected,
     equalityFn: (a: any, b: any) => boolean = CSTU_isEqual
   ) {
-    const instance = use_CSTU_Instance()
-    const refUpdate = use_CSTU_Update()
-    /**为了解决闭包照成的值不是最新问题*/
-    const refSelector = useRef(selector)
-    refSelector.current = selector
-
-    /**key值*/
-    const refKey = useRef(Symbol("instance_selector"))
-
-    const storeRef = useRef(instance?.[registerSelectorFunName]?.(refKey.current, refSelector.current, refUpdate.current, equalityFn))
-
-    useEffect(() => {
-      return () => storeRef.current?.unMount?.()
-    }, [refKey.current])
-
-    return instance?.[getSelectorValueFunName]?.(refKey.current) as Selected
+    const [instance] = use_CSTU_Instance()
+    const slice = useSyncExternalStoreWithSelector(
+      instance._crate_CSTU_registerSubscribe(listenerField),
+      instance._create_CSTU_getState,
+      instance._create_CSTU_getInitialState,
+      selector,
+      equalityFn,
+    )
+    return slice as Selected
   }
 }
 
@@ -316,7 +309,7 @@ export const use_CSTU_Update = () => {
  * @param registerSelectorFunName 注册执行器的方法名称
  * @param getSelectorValueFunName 获取最新值的方法名称
 */
-export const create_CSTU_Hooks = <T = CSTU_Instance>(instance: CSTU_ClassInterface<T>, registerFunName: string, registerWatchFunName?: string, registerSelectorFunName?: string, getSelectorValueFunName?: string) => {
+export const create_CSTU_Hooks = <T extends CSTU_Instance = CSTU_Instance>(instance: CSTU_ClassInterface<T>, registerFunName: string, registerWatchFunName: string = "watchMapData", listenerField: string = 'listenerSetData') => {
   /**创建hooks*/
   /**创建实例状态上下文*/
   const instanceContext = create_CSTU_InstanceContext<T>(new instance())
@@ -331,7 +324,7 @@ export const create_CSTU_Hooks = <T = CSTU_Instance>(instance: CSTU_ClassInterfa
   /**监听字段值变化*/
   const useInstanceFieldWatch = create_CSTU_hooks_InstanceFieldWatch(registerWatchFunName)
   /**Selector 执行器 ,允许您使用选择器函数从存储状态中提取数据以供此组件使用。*/
-  const useInstanceSelector = create_CSTU_hooks_InstanceSelector(useInstance, registerSelectorFunName, getSelectorValueFunName)
+  const useInstanceSelector = create_CSTU_hooks_InstanceSelector(useInstance, listenerField)
   return {
     instanceContext,
     useInstance,
